@@ -3,6 +3,10 @@
 ## Résumé de l'application
 Ce projet a été réalisé dans le cadre de l'unité d'enseignement **Typage et Analyse Statique (TAS)** de l'année 2024-2025. Il met en œuvre un typeur et un évaluateur pour un λ-calcul contenant différentes fonctionnalités.
 
+## Prérequis
+- `Java` (version 11 ou supérieure)
+- `Make`
+
 ## Exécution
 
 ### Compilation
