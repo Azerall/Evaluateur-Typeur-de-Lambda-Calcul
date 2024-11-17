@@ -23,7 +23,6 @@ public class Main {
         System.out.println("(λx.(xy))x : " + Part2.print_term(testAlphaConv));
         
         // Réduction des termes
-        System.out.println("\nRéduction des termes :");
         System.out.println("Réduction de I : " + Part2.print_term(Part2.lt_cbv_norm(I)));
         System.out.println("Réduction de δ : " + Part2.print_term(Part2.lt_cbv_norm(delta)));
         System.out.println("Réduction de Ω (δ δ) : " + Part2.print_term(Part2.lt_cbv_norm(omega)));
@@ -103,9 +102,10 @@ public class Main {
         );
         Pterm letTerm = new Let(new Var("x"), new Int(10), new Add(new Var("x"), new Int(5)));
         Pterm letTermAlphaConversion = new Let(new Var("x"), new Let(new Var("x"), new Int(10), new Add(new Var("x"), new Int(5))), new Add(new Var("x"), new Int(5)));
+        Pterm letSKK = new Let(new Var("x"), new Int(7), new App(SKK, new Var("x")));
         Pterm letFactorial = new Let(new Var("x"), new Int(5), new App(factorial, new Var("x")));
         Pterm letFibonacci = new Let(new Var("x"), new Int(7), new App(fibonacci, new Var("x")));
-        Pterm letLength = new Let(new Var("l"), listOfList, new App(length, new Var("l")));
+        Pterm letLength = new Let(new Var("l"), list, new App(length, new Var("l")));
 
         // Affichage des termes
         /*System.out.println("3 + 5 : " + Part2.print_term(add));
@@ -125,9 +125,10 @@ public class Main {
         System.out.println("Length : " + Part2.print_term(length));
         System.out.println("Let x = 10 in x + 5 : " + Part2.print_term(letTerm));
         System.out.println("Let x = Let x = 10 in x + 5 in x + 5 : " + Part2.print_term(letTermAlphaConversion));
+        System.out.println("Let x = 7 in S K K : " + Part2.print_term(letSKK));
         System.out.println("Let x = 5 in Factorielle(x) : " + Part2.print_term(letFactorial));
         System.out.println("Let x = 10 in Fibonacci(x) : " + Part2.print_term(letFibonacci));
-        System.out.println("Let l = [[1, 2], [3, 4], []] in Length(l) : " + Part2.print_term(letLength));*/
+        System.out.println("Let l = [(3 + 5), (10 - 5)] in Length(l) : " + Part2.print_term(letLength));*/
 
         // Réduction des termes
         System.out.println("Réduction de 3 + 5 : " + Part2.print_term(Part2.lt_cbv_norm(add)));
@@ -147,9 +148,10 @@ public class Main {
         System.out.println("Réduction de Length : " + Part2.print_term(Part2.lt_cbv_norm(length)));
         System.out.println("Réduction de Let x = 10 in x + 5 : " + Part2.print_term(Part2.lt_cbv_norm(letTerm)));
         System.out.println("Réduction de Let x = Let x = 10 in x + 5 in x + 5 : " + Part2.print_term(Part2.lt_cbv_norm(letTermAlphaConversion)));
+        System.out.println("Réduction de Let x = 7 in S K K : " + Part2.print_term(Part2.lt_cbv_norm(letSKK)));
         System.out.println("Réduction de Let x = 5 in Factorielle(x) : " + Part2.print_term(Part2.lt_cbv_norm(letFactorial)));
         System.out.println("Réduction de Let x = 7 in Fibonacci(x) : " + Part2.print_term(Part2.lt_cbv_norm(letFibonacci)));
-        System.out.println("Réduction de Let l = [[1, 2], [3, 4], []] in Length(l) : " + Part2.print_term(Part2.lt_cbv_norm(letLength)));
+        System.out.println("Réduction de Let l = [(3 + 5), (10 - 5)] in Length(l) : " + Part2.print_term(Part2.lt_cbv_norm(letLength)));
         System.out.println();
         
         // Types des termes
@@ -170,12 +172,6 @@ public class Main {
 
         Ptype listOfListType = Part3.infereType(listOfList);
         System.out.println("Type de la liste [[1, 2], [3, 4], []] : " + (listOfListType != null ? Part3.printType(listOfListType) : "Type non inférable"));
-
-        Ptype head2Type = Part3.infereType(head2);
-        System.out.println("Type de la Tête de la liste : " + (head2Type != null ? Part3.printType(head2Type) : "Type non inférable"));
-
-        Ptype tail2Type = Part3.infereType(tail2);
-        System.out.println("Type de la Queue de la liste : " + (tail2Type != null ? Part3.printType(tail2Type) : "Type non inférable"));
 
         Ptype ifZeroType = Part3.infereType(ifZero);
         System.out.println("Type de IfZero(0, 1, 2) : " + (ifZeroType != null ? Part3.printType(ifZeroType) : "Type non inférable"));
@@ -204,6 +200,9 @@ public class Main {
         Ptype letTermAlphaConversionType = Part3.infereType(letTermAlphaConversion);
         System.out.println("Type de Let x = Let x = 10 in x + 5 in x + 5 : " + (letTermAlphaConversionType != null ? Part3.printType(letTermAlphaConversionType) : "Type non inférable"));
 
+        Ptype letSKKType = Part3.infereType(letSKK);
+        System.out.println("Type de Let x = 7 in S K K : " + (letSKKType != null ? Part3.printType(letSKKType) : "Type non inférable"));
+
         Ptype letFactorialType = Part3.infereType(letFactorial);
         System.out.println("Type de Let x = 5 in Factorielle(x) : " + (letFactorialType != null ? Part3.printType(letFactorialType) : "Type non inférable"));
 
@@ -211,7 +210,7 @@ public class Main {
         System.out.println("Type de Let x = 7 in Fibonacci(x) : " + (letFibonacciType != null ? Part3.printType(letFibonacciType) : "Type non inférable"));
 
         Ptype letLengthType = Part3.infereType(letLength);
-        System.out.println("Type de Let l = [[1, 2], [3, 4], []] in Length(l) : " + (letLengthType != null ? Part3.printType(letLengthType) : "Type non inférable"));
+        System.out.println("Type de Let l = [(3 + 5), (10 - 5)] in Length(l) : " + (letLengthType != null ? Part3.printType(letLengthType) : "Type non inférable"));
 
         // Part6 : Aller plus loin
         System.out.println("\n\n===== Partie 6 : Aller plus loin =====\n");

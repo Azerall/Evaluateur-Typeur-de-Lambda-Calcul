@@ -13,7 +13,7 @@ class UnificationException extends Exception {
 }
 
 class TimeoutException extends Exception {
-    public static final long TIMEOUT = 10; // Timeout en millisecondes
+    public static final long TIMEOUT = 100; // Timeout en millisecondes
 
     public TimeoutException() {
         super("Timeout : " + TIMEOUT + "ms");

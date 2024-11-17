@@ -90,7 +90,7 @@ class Part2 {
         } else if (t instanceof Right) {
             return "Right(" + print_term(((Right) t).value) + ")";
         } else if (t instanceof Switch) {
-            return "switch(" + print_term(((Switch) t).target) + ") { " +
+            return "switch(" + print_term(((Switch) t).branch) + ") { " +
                    "Left(" + ((Switch) t).leftVar + ") -> " + print_term(((Switch) t).leftBranch) + ", " +
                    "Right(" + ((Switch) t).rightVar + ") -> " + print_term(((Switch) t).rightBranch) + " }";
         }
@@ -208,10 +208,10 @@ class Part2 {
             return new Right(substitution(x, n, ((Right) t).value));
         } else if (t instanceof Switch) {
             if (!((Switch) t).leftVar.equals(x) && !((Switch) t).rightVar.equals(x)) { // Pas de substitution si lié
-                Pterm newTarget = substitution(x, n, ((Switch) t).target);
+                Pterm newBranch = substitution(x, n, ((Switch) t).branch);
                 Pterm newLeftBranch = substitution(x, n, ((Switch) t).leftBranch);
                 Pterm newRightBranch = substitution(x, n, ((Switch) t).rightBranch);
-                return new Switch(newTarget, ((Switch) t).leftVar, newLeftBranch, ((Switch) t).rightVar, newRightBranch);
+                return new Switch(newBranch, ((Switch) t).leftVar, newLeftBranch, ((Switch) t).rightVar, newRightBranch);
             }
             return t;
         }        
@@ -320,13 +320,13 @@ class Part2 {
         } else if (t instanceof Right) {
             return new Right(ltr_ctb_step(((Right) t).value));
         } else if (t instanceof Switch) {
-            Pterm target = ltr_ctb_step(((Switch) t).target);
-            if (target instanceof Left) {
-                return substitution(((Switch) t).leftVar, ((Left) target).value, ((Switch) t).leftBranch);
-            } else if (target instanceof Right) {
-                return substitution(((Switch) t).rightVar, ((Right) target).value, ((Switch) t).rightBranch);
+            Pterm branch = ltr_ctb_step(((Switch) t).branch);
+            if (branch instanceof Left) {
+                return substitution(((Switch) t).leftVar, ((Left) branch).value, ((Switch) t).leftBranch);
+            } else if (branch instanceof Right) {
+                return substitution(((Switch) t).rightVar, ((Right) branch).value, ((Switch) t).rightBranch);
             }
-            return new Switch(target, ((Switch) t).leftVar, ((Switch) t).leftBranch, ((Switch) t).rightVar, ((Switch) t).rightBranch);
+            return new Switch(branch, ((Switch) t).leftVar, ((Switch) t).leftBranch, ((Switch) t).rightVar, ((Switch) t).rightBranch);
         }              
         return null;
     }

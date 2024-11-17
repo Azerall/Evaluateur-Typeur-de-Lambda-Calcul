@@ -140,6 +140,7 @@ class Part4 {
         return result;
     }
 
+    // fonction qui récupère les variables de type libres dans un type
     static List<String> getFreeTypeVars(Ptype type) {
         List<String> freeVars = new ArrayList<>();
         if (type instanceof TypeVar) {
@@ -150,7 +151,7 @@ class Part4 {
         } else if (type instanceof ListType) {
             freeVars.addAll(getFreeTypeVars(((ListType) type).t));
         } else if (type instanceof PourToutType) {
-            freeVars.remove(((PourToutType) type).x); // Supprime les variables liées
+            freeVars.remove(((PourToutType) type).x); // Supprimer les variables liées
             freeVars.addAll(getFreeTypeVars(((PourToutType) type).t));
         }
         return freeVars;

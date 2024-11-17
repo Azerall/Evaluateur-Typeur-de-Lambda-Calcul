@@ -106,12 +106,12 @@ class Equation {
             Ptype elementType = Part3.nouvelle_var_t();
             Ptype listType = new ListType(elementType);
             equations.addAll(genere_equa(((Head) pterm).list, listType, env));
-            equations.add(new Equation(ptype, elementType)); // Le type de la tête est le type des éléments
+            equations.add(new Equation(ptype, elementType)); // le type de la tête est le type des éléments
         } else if (pterm instanceof Tail) {
             Ptype elementType = Part3.nouvelle_var_t();
             Ptype listType = new ListType(elementType);
             equations.addAll(genere_equa(((Tail) pterm).list, listType, env));
-            equations.add(new Equation(ptype, listType)); // Le type de la queue est aussi une liste
+            equations.add(new Equation(ptype, listType)); // le type de la queue est aussi une liste
         } else if (pterm instanceof IfZero) {
             equations.addAll(genere_equa(((IfZero) pterm).condition, new IntType(), env));
             equations.addAll(genere_equa(((IfZero) pterm).consequence, ptype, env));
@@ -163,7 +163,7 @@ class Equation {
         } else if (pterm instanceof Switch) {
             Ptype leftType = Part3.nouvelle_var_t();
             Ptype rightType = Part3.nouvelle_var_t();
-            equations.addAll(genere_equa(((Switch) pterm).target, new SumType(leftType, rightType), env));
+            equations.addAll(genere_equa(((Switch) pterm).branch, new SumType(leftType, rightType), env));
             equations.addAll(genere_equa(((Switch) pterm).leftBranch, ptype, env));
             equations.addAll(genere_equa(((Switch) pterm).rightBranch, ptype, env));
         }        
@@ -212,6 +212,20 @@ class Part3 {
             return var.equals(((TypeVar) t).x);
         } else if (t instanceof Arr) {
             return occurCheck(var, ((Arr) t).t1) || occurCheck(var, ((Arr) t).t2);
+        } 
+        // 4.2.1. Mise à jour de la fonction d’occur check pour les nouveaux types
+        else if (t instanceof IntType) {
+            return false;
+        } else if (t instanceof ListType) {
+            return occurCheck(var, ((ListType) t).t);
+        } else if (t instanceof PourToutType) {
+            return occurCheck(var, ((PourToutType) t).t);
+        }
+        // 6. Ajout de la gestion des types produits (enregistrements) et/ou des types sommes (ou option)
+        else if (t instanceof ProdType) {
+            return occurCheck(var, ((ProdType) t).left) || occurCheck(var, ((ProdType) t).right);
+        } else if (t instanceof SumType) {
+            return occurCheck(var, ((SumType) t).left) || occurCheck(var, ((SumType) t).right);
         }
         return false;
     }
@@ -242,7 +256,7 @@ class Part3 {
         Ptype left = eq.left;
         Ptype right = eq.right;
 
-        //System.out.println("Unification de: " + printType(left) + " et " + printType(right)); // Ajout du log
+        //System.out.println("Unification de: " + printType(left) + " et " + printType(right));
 
         if (left instanceof TypeVar) {
             String var = ((TypeVar) left).x;
@@ -252,7 +266,7 @@ class Part3 {
                 }
                 substituteEquations(var, right, equations);
                 substitutions.put(var, right);
-                //System.out.println("Substitution de " + var + " avec " + printType(right)); // Log pour substitution
+                //System.out.println("Substitution de " + var + " avec " + printType(right));
             }
         } else if (right instanceof TypeVar) {
             equations.add(new Equation(right, left));  // on change l’ordre pour y revenir plus tard
@@ -264,7 +278,7 @@ class Part3 {
         else if (left instanceof ListType && right instanceof ListType) {
             equations.add(new Equation(((ListType) left).t, ((ListType) right).t));
         } else if (left instanceof PourToutType || right instanceof PourToutType) {
-            // barendregtisation
+            // Barendregtisation
             String freshVar = "T" + compteur_var_t++;
             if (left instanceof PourToutType) {
                 left = substituteType(((PourToutType) left).x, new TypeVar(freshVar), ((PourToutType) left).t);

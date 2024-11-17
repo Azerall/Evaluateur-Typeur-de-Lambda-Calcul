@@ -48,12 +48,12 @@ class Right extends Pterm {
 
 // Switch sw M ▷ x : N1 + N2
 class Switch extends Pterm {
-    Pterm target;
+    Pterm branch;
     String leftVar, rightVar;
     Pterm leftBranch, rightBranch;
 
-    Switch(Pterm target, String leftVar, Pterm leftBranch, String rightVar, Pterm rightBranch) {
-        this.target = target;
+    Switch(Pterm branch, String leftVar, Pterm leftBranch, String rightVar, Pterm rightBranch) {
+        this.branch = branch;
         this.leftVar = leftVar;
         this.leftBranch = leftBranch;
         this.rightVar = rightVar;

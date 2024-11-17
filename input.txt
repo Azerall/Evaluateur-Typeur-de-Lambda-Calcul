@@ -1,3 +1,20 @@
-let x = 42 in (x + 1)
-let f = fun x -> (x * x) in f(5)
+cons(1, cons(2, cons(3, nil)))
+head(cons(1, cons(2, cons(3, nil))))
+tail(cons(1, cons(2, cons(3, nil))))
+ifEmpty(cons(nil, nil), 42, 0)
+ifEmpty(cons(1, nil), 42, 0)
+
 fix fact = fun n -> ifZero(n, 1, (n * fact(n - 1)))
+let x = 42 in (x + 1)
+let x = 42 in ((fun x -> x) x)
+let x = 7 in ((fun x -> (fun y -> (fun z -> ((x z) (y z))))) x)
+let f = fun x -> (x * x) in f(5)
+
+pair(3, 5)
+proj1(pair(3, 5))
+proj2(pair(3, 5))
+switch(left(42), x: x, y: 0)
+switch(right(24), x: 0, y: y)
+
+fun x -> (x x)
+(fun x -> (x x)) (fun x -> (x x))
