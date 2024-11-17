@@ -18,13 +18,13 @@ java Main
 ```
 
 ### Utilisation du Parser
-Pour utiliser le parser, il suffit d'écrire les termes dans le fichier `input.txt` et ensuite exécuter la commande suivante pour lancer le parsing :
+Pour utiliser le parser, il suffit d'écrire les termes dans le fichier `input.txt` et exécuter la commande suivante :
 ```bash
 java Parser
 ```
 
 ### Nettoyage
-Pour nettoyer les fichiers générés par la compilation, vous pouvez utiliser la commande :
+Pour nettoyer les fichiers générés par la compilation, utilisez la commande :
 ```bash
 make clean
 ```
